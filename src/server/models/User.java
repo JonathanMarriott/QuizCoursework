@@ -11,11 +11,6 @@ public class User {
     private String email;
     private String password;
 
-
-
-
-
-
     // Get IntelliJ to auto-generate a constructor, getter and setters here:
 
     public User(int id, String firstName, String lastName, String email, String password) {
