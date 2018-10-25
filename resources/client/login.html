@@ -21,7 +21,7 @@
 
 </head>
 
-<body class="bg-dark">
+<body class="bg-dark" onload="pageLoad()">
 <div id="wrapper">
 
     <!-- Sidebar -->
@@ -56,9 +56,21 @@
                 </div>
             </nav>
         </div>
-    </div>
-    <!-- Page Content -->
 
+        <!-- Page Content -->
+        <div class="container-fluid col-6 justify-content-md-center text-center">
+            <h3 class="font-weight-normal text-light">Please sign in</h3>
+            <form class="form-signin " id="loginForm">
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus>
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            </form>
+            <br>
+            <a class="font-weight-light text-purple" href="signup.html">Create an account</a>
+        </div>
+    </div>
 </div>
 </body>
 </html>

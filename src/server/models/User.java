@@ -10,16 +10,13 @@ public class User {
     private String lastName;
     private String email;
     private String password;
+    private String sessionToken;
+
+
+
+
 
     // Get IntelliJ to auto-generate a constructor, getter and setters here:
-
-    public User(int id, String firstName, String lastName, String email, String password) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-    }
 
     public int getId() {
         return id;
@@ -61,7 +58,25 @@ public class User {
         this.password = password;
     }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    public String getSessionToken() {
+        return sessionToken;
+    }
+
+    public void setSessionToken(String sessionToken) {
+        this.sessionToken = sessionToken;
+    }
+
+    public User(int id, String firstName, String lastName, String email, String password, String sessionToken) {
+    
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.sessionToken = sessionToken;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     public static ArrayList<User> users = new ArrayList<>();
 
@@ -83,7 +98,7 @@ public class User {
         j.put("lastName", getLastName());
         j.put("email", getEmail());
         j.put("password", getPassword());
-
+        j.put("sessionToken", getSessionToken());
 
 
 

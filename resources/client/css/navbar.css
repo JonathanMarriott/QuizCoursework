@@ -3,9 +3,11 @@
  * Copyright 2013-2017 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-simple-sidebar/blob/master/LICENSE)
  */
+.text-purple{color: #A0A;}
 
 body {
     overflow-x: hidden;
+    padding-top: 65px;
 }
 
 #wrapper {

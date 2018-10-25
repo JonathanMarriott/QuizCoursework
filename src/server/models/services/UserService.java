@@ -10,18 +10,60 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class UserService {
+    public static User selectByEmail(String email) {
+        User result = null;
+        try {
+            PreparedStatement statement = DatabaseConnection.newStatement(
+                    "SELECT userID, firstName, lastName, email, password, sessionToken FROM Users WHERE email = ?"
+            );
+            if (statement != null) {
+                statement.setString(1, email);
+                ResultSet results = statement.executeQuery();
+                if (results != null && results.next()) {
+                    result = new User(results.getInt("userID"), results.getString("firstName"), results.getString("lastName"), results.getString("email"), results.getString("password"), results.getString("sessionToken"));
+                }
+            }
+        } catch (SQLException resultsException) {
+            String error = "Database error - can't select by email from 'Users' table: " + resultsException.getMessage();
 
+            Logger.log(error);
+        }
+        return result;
+
+    }
+    public static User selectBySessionToken(String token) {
+        User result = null;
+        try {
+            PreparedStatement statement = DatabaseConnection.newStatement(
+                    "SELECT userID, firstName, lastName, email, password,sessionToken FROM Users WHERE SessionToken = ?"
+            );
+            if (statement != null) {
+                statement.setString(1, token);
+                ResultSet results = statement.executeQuery();
+                if (results != null && results.next()) {
+                    result = new User(results.getInt("userID"), results.getString("firstName"), results.getString("lastName"), results.getString("email"), results.getString("password"), results.getString("sessionToken"));
+                Logger.log("Selected by SessionToken from 'Users' table"+results.getInt("userID"));
+                }
+            }
+        } catch (SQLException resultsException) {
+            String error = "Database error - can't select by email from 'Users' table: " + resultsException.getMessage();
+
+            Logger.log(error);
+        }
+        return result;
+
+    }
     public static String selectAllInto(List<User> targetList) {
         targetList.clear();
         try {
             PreparedStatement statement = DatabaseConnection.newStatement(
-                    "SELECT userID, firstName, lastName, email, password FROM Users"
+                    "SELECT userID, firstName, lastName, email, password, sessionToken FROM Users"
             );
             if (statement != null) {
                 ResultSet results = statement.executeQuery();
                 if (results != null) {
                     while (results.next()) {
-                        targetList.add(new User(results.getInt("userID"), results.getString("firstName"), results.getString("lastName"), results.getString("email"), results.getString("password")));
+                        targetList.add(new User(results.getInt("userID"), results.getString("firstName"), results.getString("lastName"), results.getString("email"), results.getString("password"), results.getString("sessionToken")));
 
 
                     }
@@ -40,13 +82,13 @@ public class UserService {
         User result = null;
         try {
             PreparedStatement statement = DatabaseConnection.newStatement(
-                    "SELECT userID, firstName, lastName, email, password FROM Users WHERE userID = ?"
+                    "SELECT userID, firstName, lastName, email, password, sessionToken FROM Users WHERE userID = ?"
             );
             if (statement != null) {
                 statement.setInt(1, id);
                 ResultSet results = statement.executeQuery();
                 if (results != null && results.next()) {
-                    result = new User(results.getInt("userID"), results.getString("firstName"), results.getString("lastName"), results.getString("email"), results.getString("password"));
+                    result = new User(results.getInt("userID"), results.getString("firstName"), results.getString("lastName"), results.getString("email"), results.getString("password"), results.getString("sessionToken"));
 
 
                 }
@@ -62,14 +104,14 @@ public class UserService {
     public static String insert(User itemToSave) {
         try {
             PreparedStatement statement = DatabaseConnection.newStatement(
-                    "INSERT INTO Users (userID, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)"
+                    "INSERT INTO Users (userID, firstName, lastName, email, password, sessionToken) VALUES (?, ?, ?, ?, ?, ?)"
             );
             statement.setInt(1, itemToSave.getId());
             statement.setString(2, itemToSave.getFirstName());
             statement.setString(3, itemToSave.getLastName());
             statement.setString(4, itemToSave.getEmail());
             statement.setString(5, itemToSave.getPassword());
-
+            statement.setString(6, itemToSave.getSessionToken());
 
 
 
@@ -87,18 +129,18 @@ public class UserService {
     public static String update(User itemToSave) {
         try {
             PreparedStatement statement = DatabaseConnection.newStatement(
-                    "UPDATE Users SET firstName = ?, lastName = ?, email = ?, password = ? WHERE userID = ?"
+                    "UPDATE Users SET firstName = ?, lastName = ?, email = ?, password = ?, sessionToken = ? WHERE userID = ?"
             );
             statement.setString(1, itemToSave.getFirstName());
             statement.setString(2, itemToSave.getLastName());
             statement.setString(3, itemToSave.getEmail());
             statement.setString(4, itemToSave.getPassword());
+            statement.setString(5, itemToSave.getSessionToken());
 
 
 
 
-
-            statement.setInt(5, itemToSave.getId());
+            statement.setInt(6, itemToSave.getId());
             statement.executeUpdate();
             return "OK";
         } catch (SQLException resultsException) {
