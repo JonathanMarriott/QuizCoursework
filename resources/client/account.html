@@ -14,20 +14,19 @@
     <script src="/client/js/js.cookie.min.js"></script>
     <script src="/client/js/querystring.js"></script>
     <script src="/client/js/navbar.js"></script>
-    <script src="/client/js/login.js"></script>
+    <script src="/client/js/account.js"></script>
 
     <link href="/client/css/bootstrap.min.css" rel="stylesheet">
     <link href="/client/css/navbar.css" rel="stylesheet">
 
 </head>
 
-<body class="bg-dark">
+<body class="bg-dark" onload="checkUserSession()">
 <div id="wrapper">
 
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
-            <li class="sidebar-brand"><a href="index.html">Quiz</a></li>
             <li><a href="search.html">Search</a></li>
             <li><a href="saved.html">Saved Quizzes</a></li>
             <hr>
@@ -58,7 +57,56 @@
         </div>
     </div>
     <!-- Page Content -->
-
+    <div class="container-fluid  justify-content-center text-center">
+        <h3 class="font-weight-normal text-light justify-content-md-center">Update your details</h3>
+        <br>
+        <div class="row justify-content-between">
+            <div class="col-5">
+                <form class="form" id="emailForm">
+                    <div class="form-group">
+                        <label for="inputEmail" class="sr-only">Enter new email address</label>
+                        <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Enter new email address" required>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Update Email</button>
+                    </div>
+                </form>
+                <br>
+                <form class="form" id="nameForm">
+                    <div class="form-group">
+                        <label for="inputFirst" class="sr-only">Enter new first name</label>
+                        <input type="email" id="inputFirst" name="firstName" class="form-control" placeholder="Enter new first name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLast" class="sr-only">Enter new last name</label>
+                        <input type="email" id="inputLast" name="lastName" class="form-control" placeholder="Enter new last name" required>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Update Name</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-5">
+                <form class="form" id="passwordForm">
+                    <div class="form-group">
+                        <label for="inputOldPassword" class="sr-only">Enter current password</label>
+                        <input type="email" id="inputOldPassword" name="oldPassword" class="form-control" placeholder="Enter current password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword" class="sr-only">Enter new password</label>
+                        <input type="email" id="inputPassword" name="password" class="form-control" placeholder="Enter new password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword2" class="sr-only">Enter new password again</label>
+                        <input type="email" id="inputPassword2" name="password" class="form-control" placeholder="Enter new password again" required>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Update Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
 </div>

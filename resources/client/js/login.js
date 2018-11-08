@@ -37,4 +37,4 @@ function loginForm() {
         });
 
     });
-}
+}login.js
