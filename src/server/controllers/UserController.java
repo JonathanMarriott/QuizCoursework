@@ -39,7 +39,36 @@ public class UserController {
             return "Error: Can't find user account.";
         }
     }
+    @POST
+    @Path("add")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String addUser(@FormParam("email") String email,
+                          @FormParam("firstName") String firstName,
+                          @FormParam("lastName") String lastName,
+                          @FormParam("password") String password,
+                          @FormParam("password2") String password2) {
 
+        Logger.log("/user/add - Attempt by " + email);
+        if (!password.equals(password2)){
+            return "Error: Passwords do not match";
+        }
+        else if(UserService.selectByEmail(email)!= null) {
+            return "Error: Account with that email already exists";
+        }
+        else{
+            String token = UUID.randomUUID().toString();
+            User signUpInfo = new User(-1,firstName,lastName,email.toLowerCase(),password,token);
+            if(UserService.insert(signUpInfo).equals("OK")) {
+                return token;
+            }
+            else {
+                return "Error: Unable to create new user";
+
+            }
+
+        }
+    }
     @GET
     @Path("check")
     @Produces(MediaType.APPLICATION_JSON)

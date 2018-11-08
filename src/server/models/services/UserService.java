@@ -17,7 +17,7 @@ public class UserService {
                     "SELECT userID, firstName, lastName, email, password, sessionToken FROM Users WHERE email = ?"
             );
             if (statement != null) {
-                statement.setString(1, email);
+                statement.setString(1, email.toLowerCase());
                 ResultSet results = statement.executeQuery();
                 if (results != null && results.next()) {
                     result = new User(results.getInt("userID"), results.getString("firstName"), results.getString("lastName"), results.getString("email"), results.getString("password"), results.getString("sessionToken"));
@@ -104,14 +104,13 @@ public class UserService {
     public static String insert(User itemToSave) {
         try {
             PreparedStatement statement = DatabaseConnection.newStatement(
-                    "INSERT INTO Users (userID, firstName, lastName, email, password, sessionToken) VALUES (?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO Users (firstName, lastName, email, password, sessionToken) VALUES (?, ?, ?, ?, ?)"
             );
-            statement.setInt(1, itemToSave.getId());
-            statement.setString(2, itemToSave.getFirstName());
-            statement.setString(3, itemToSave.getLastName());
-            statement.setString(4, itemToSave.getEmail());
-            statement.setString(5, itemToSave.getPassword());
-            statement.setString(6, itemToSave.getSessionToken());
+            statement.setString(1, itemToSave.getFirstName());
+            statement.setString(2, itemToSave.getLastName());
+            statement.setString(3, itemToSave.getEmail());
+            statement.setString(4, itemToSave.getPassword());
+            statement.setString(5, itemToSave.getSessionToken());
 
 
 

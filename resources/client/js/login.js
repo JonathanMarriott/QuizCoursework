@@ -1,5 +1,22 @@
 function pageLoad(){
-    loginForm();
+    if(Cookies.get("sessionToken")!== undefined) {
+        console.log("Session Token found");
+        $.ajax({
+            url: '/user/check',
+            type: 'GET',
+            success: response => {
+                console.log("checking for error");
+                if (!response.hasOwnProperty("error")) {
+                    alert("You're already logged in as "+response.firstName +" "+ response.lastName);
+                    window.location.href = "/client/profile.html";
+                }
+
+            }
+        })
+    }
+    else{
+        loginForm();
+    }
 }
 function loginForm() {
     const loginForm = $('#loginForm');
