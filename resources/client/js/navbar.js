@@ -21,7 +21,7 @@ function checkUserSession(){
                     $("#navbarAccountMenu").html('<a class="dropdown-item" onclick="logout()" href="/client/index.html">Sign Out</a>');
                     console.log(response);
                     pageLoad(response);
-                }
+                  }
 
             }
         })

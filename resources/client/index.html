@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
-
     <title>Quiz System</title>
-
+    <!--Site Icon -->
     <link rel='shortcut icon' type='image/x-icon' href='/client/favicon.ico' />
-
+    <!--Javascript file imports -->
     <script src="/client/js/jquery-3.3.1.min.js"></script>
     <script src="/client/js/popper.min.js"></script>
     <script src="/client/js/bootstrap.min.js"></script>
@@ -15,18 +13,18 @@
     <script src="/client/js/querystring.js"></script>
     <script src="/client/js/navbar.js"></script>
     <script src="/client/js/login.js"></script>
-
+    <!--CSS file imports -->
     <link href="/client/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/client/css/bootstrapTheme.css" rel="stylesheet">
     <link href="/client/css/navbar.css" rel="stylesheet">
-
 </head>
 
 <body class="bg-dark">
-<div id="wrapper">
+<div id="wrapper"><!--Sidebar JS requires body to be enclosed in wrapped div -->
 
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
+        <ul class="sidebar-nav"><!--Page links below -->
             <li><a href="search.html">Search</a></li>
             <li><a href="saved.html">Saved Quizzes</a></li>
             <hr>
@@ -40,14 +38,21 @@
     </div>
     <!-- Topbar -->
     <div id="page-content-wrapper">
-        <div class="fixed-top">
+        <div class="fixed-top"><!--Fixes bar to top of the page -->
+            <!--Causes the 2 child divs to be on either side of topbar -->
             <nav class="navbar navbar-dark bg-secondary justify-content-between">
                 <div>
+                    <!--Button to toggle the sidebar -->
                     <button href="#menu-toggle" class="navbar-toggler border-0" id="menu-toggle"><span class="navbar-toggler-icon"></span></button>
-                    <a class="navbar-brand" href="/client/index.html"><img src="/client/icon.png" width="30" height="30" class="d-inline-block align-top" alt="Logo"> Quiz System</a>
+                    <!--Logo and page name, clicking links to index page -->
+                    <a class="navbar-brand" href="/client/index.html">
+                        <img src="/client/icon.png" width="30" height="30" class="d-inline-block align-top" alt="Logo"> Quiz System
+                    </a>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-secondary dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Not logged in</button>
+                    <!--Drop down menu -->
+                    <button type="button" class="btn btn-secondary dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown">Not logged in</button>
+                    <!--Contents of the dropdown menu will chnage if user is logged in -->
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="login.html">Login</a>
                         <a class="dropdown-item" href="signup.html">Create Account</a>
@@ -57,6 +62,9 @@
         </div>
     </div>
     <!-- Page Content -->
+    <div class="container-fluid">
+        <h1 class="display-1 text-light text-center">Homepage Placeholder</h1>
+    </div>
 
 
 </div>
