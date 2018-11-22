@@ -17,6 +17,7 @@
     <script src="/client/js/account.js"></script>
 
     <link href="/client/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/client/css/bootstrapTheme.css" rel="stylesheet">
     <link href="/client/css/navbar.css" rel="stylesheet">
 
 </head>
@@ -60,9 +61,9 @@
     <div class="container-fluid  justify-content-center text-center">
         <h3 class="font-weight-normal text-light justify-content-md-center">Update your details</h3>
         <br>
-        <div class="row justify-content-between">
-            <div class="col-5">
-                <form class="form" id="emailForm">
+        <div class="row justify-content-between"> <!-- Dividing the page into 2 halves-->
+            <div class="col-5"> <!--Puts the name and email forms into the same column-->
+                <form class="form" id="emailForm"><!--Form to update email-->
                     <div class="form-group">
                         <label for="inputEmail" class="sr-only">Enter new email address</label>
                         <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Enter new email address" required>
@@ -72,7 +73,7 @@
                     </div>
                 </form>
                 <br>
-                <form class="form" id="nameForm">
+                <form class="form" id="nameForm"><!--Form to update names-->
                     <div class="form-group">
                         <label for="inputFirst" class="sr-only">Enter new first name</label>
                         <input type="email" id="inputFirst" name="firstName" class="form-control" placeholder="Enter new first name" required>
@@ -82,12 +83,12 @@
                         <input type="email" id="inputLast" name="lastName" class="form-control" placeholder="Enter new last name" required>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Update Name</button>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Update Names</button>
                     </div>
                 </form>
             </div>
-            <div class="col-5">
-                <form class="form" id="passwordForm">
+            <div class="col-5"><!--Puts the password form in the other side of the page-->
+                <form class="form" id="passwordForm"><!--Form to update password-->
                     <div class="form-group">
                         <label for="inputOldPassword" class="sr-only">Enter current password</label>
                         <input type="email" id="inputOldPassword" name="oldPassword" class="form-control" placeholder="Enter current password" required>

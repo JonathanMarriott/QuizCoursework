@@ -15,6 +15,7 @@
     <script src="/client/js/login.js"></script>
 
     <link href="/client/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/client/css/bootstrapTheme.css" rel="stylesheet">
     <link href="/client/css/navbar.css" rel="stylesheet">
 </head>
 
@@ -54,21 +55,26 @@
         </div>
 
         <!-- Page Content -->
-        <div class="container-fluid col-6 justify-content-md-center text-center">
+        <div class="container-fluid col-6 justify-content-md-center text-center"> <!--Div to put form in center of page-->
             <h3 class="font-weight-normal text-light">Please sign in</h3>
             <form class="form-signin " id="loginForm">
-                <div class="form-group">
+                <div class="form-group"><!--Enclosing form elements in a form-group div ensures good formatting & padding-->
+                    <!--sr-only hides the form label for  regular viewers but still enables it to be read by accessibility readers-->
                     <label for="inputEmail" class="sr-only">Email address</label>
+                    <!-- required means form will not sub,it without this, autofocus places the users cursor here on load-->
                     <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword" class="sr-only">Password</label>
+                    <!--Type password mean the password characters will be replaced for privacy reasons-->
                     <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
                 </div>
                 <div class="form-group">
+                    <!--Button to submit the form-->
                     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
                 </div>
             </form>
+            <!-- Link to the sign up page-->
             <a class="font-weight-light text-purple" href="signup.html">Create an account</a>
         </div>
     </div>

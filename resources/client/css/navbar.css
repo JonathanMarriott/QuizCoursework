@@ -3,20 +3,7 @@
  * Copyright 2013-2017 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-simple-sidebar/blob/master/LICENSE)
  */
-.text-purple{color: #A0A;}
-.btn-primary {
-    background: #A0A;
-    border: #A0A;
-}
-.btn-primary.outline:hover, .btn-primary.outline:focus, .btn-primary.outline:active, .btn-primary.outline.active, .open > .dropdown-toggle.btn-primary {
-    color: #da00da;
-    border-color: #da00da;
-}
-.btn-primary.outline:active, .btn-primary.outline.active {
-    border-color: #da00da;
-    color: #da00da;
-    box-shadow: none;
-}
+
 body {
     overflow-x: hidden;
     padding-top: 58px;
