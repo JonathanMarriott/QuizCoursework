@@ -1,23 +1,25 @@
 package server.models;
-
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
-
 public class User {
+    //Attributes
     private int id;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
     private String sessionToken;
+    //Constructor
+    public User(int id, String firstName, String lastName, String email, String password, String sessionToken) {
 
-
-
-
-
-    // Get IntelliJ to auto-generate a constructor, getter and setters here:
-
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.sessionToken = sessionToken;
+    }
+    //Getters & setters
     public int getId() {
         return id;
     }
@@ -65,31 +67,7 @@ public class User {
     public void setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
     }
-
-    public User(int id, String firstName, String lastName, String email, String password, String sessionToken) {
-    
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.sessionToken = sessionToken;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    public static ArrayList<User> users = new ArrayList<>();
-
-    public static int nextId() {
-        int id = 0;
-        for (User u: users) {
-            if (u.getId() > id) {
-                id = u.getId();
-            }
-        }
-        return id + 1;
-    }
-
+    //Converts to a JSONObject class
     @SuppressWarnings("unchecked")
     public JSONObject toJSON() {
         JSONObject j = new JSONObject();
@@ -99,10 +77,6 @@ public class User {
         j.put("email", getEmail());
         j.put("password", getPassword());
         j.put("sessionToken", getSessionToken());
-
-
-
-
         return j;
     }
 }

@@ -135,10 +135,6 @@ public class UserService {
             statement.setString(3, itemToSave.getEmail());
             statement.setString(4, itemToSave.getPassword());
             statement.setString(5, itemToSave.getSessionToken());
-
-
-
-
             statement.setInt(6, itemToSave.getId());
             statement.executeUpdate();
             return "OK";
