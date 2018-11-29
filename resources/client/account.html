@@ -62,7 +62,7 @@
         <h3 class="font-weight-normal text-light justify-content-md-center">Update Your Details</h3>
         <br>
         <div class="row justify-content-between"> <!-- Dividing the page into 2 halves-->
-            <div class="col-5"> <!--Puts the name and email forms into the same column-->
+            <div class="col-5 my-auto"> <!--Puts the name and email forms into the same column-->
                 <h4 class="font-weight-normal text-light justify-content-center">Change Email</h4>
                 <form class="form" id="emailForm"><!--Form to update email-->
                     <div class="form-group">
@@ -73,7 +73,7 @@
                         <button class="btn btn-lg btn-primary btn-block" type="submit">Update Email</button>
                     </div>
                 </form>
-                <br><br>
+                <br><br><br><br><br> <!--padding-->
                 <h4 class="font-weight-normal text-light justify-content-center">Change Names</h4>
                 <form class="form" id="nameForm"><!--Form to update names-->
                     <div class="form-group">
@@ -89,7 +89,7 @@
                     </div>
                 </form>
             </div>
-            <div class="col-5 my-auto"><!--Puts the password form in the other side of the page-->
+            <div class="col-5"><!--Puts the password form in the other side of the page, vertically central-->
                 <h4 class="font-weight-normal text-light justify-content-center">Change Password</h4>
                 <form class="form" id="passwordForm"><!--Form to update password-->
                     <div class="form-group">
@@ -108,28 +108,25 @@
                         <button class="btn btn-lg btn-primary btn-block" type="submit">Update Password</button>
                     </div>
                 </form>
+                <br><!--Delete account form-->
+                <h4 class="font-weight-normal text-light">Delete Your Account</h4>
+                <form class="form" id="deleteForm">
+                    <div class="form-group">
+                        <label for="inputPassword" class="sr-only">Password</label>
+                        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword2" class="sr-only">Confirm Password</label>
+                        <input type="password" id="inputPassword2" name="password2" class="form-control" placeholder="Confirm Password" required>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Delete Account</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
     <br>
-    <div class=" container-fluid col-6 justify-content-md-center text-center">
-        <h3 class="font-weight-normal text-light">Delete Your Account</h3>
-        <br>
-        <form class="form" id="deleteForm">
-            <div class="form-group">
-                <label for="inputPassword" class="sr-only">Password</label>
-                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
-            </div>
-            <div class="form-group">
-                <label for="inputPassword2" class="sr-only">Confirm Password</label>
-                <input type="password" id="inputPassword2" name="password2" class="form-control" placeholder="Confirm Password" required>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Delete Account</button>
-            </div>
-        </form>
-    </div>
-
 </div>
 </body>
 </html>
