@@ -4,7 +4,6 @@ import org.json.simple.JSONObject;
 import server.Logger;
 import server.models.User;
 import server.models.services.UserService;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
@@ -14,16 +13,16 @@ import java.util.UUID;
 public class UserController {
 
     @POST
-    @Path("login")
+    @Path("login") // API call on  /user/login
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String attemptLogin(@FormParam("email") String email,
+    @Produces(MediaType.TEXT_PLAIN) // returns string
+    public String attemptLogin(@FormParam("email") String email, // Takes form fields as parameters
                                @FormParam("password") String password) {
 
-        Logger.log("/user/login - Attempt by " + email);
-        User currentUser = UserService.selectByEmail(email);
-        if (currentUser != null) {
-            if (!currentUser.getPassword().equals(password)) {
+        Logger.log("/user/login - Attempt by " + email); // logs the login attempt
+        User currentUser = UserService.selectByEmail(email); // Query database for entry with specified email
+        if (currentUser != null) { // check if an entry was found
+            if (!currentUser.getPassword().equals(password)) { // checks the password entered matchs the database password 
                 return "Error: Incorrect password";
             } else {
                 String token = UUID.randomUUID().toString();
@@ -58,12 +57,39 @@ public class UserController {
         }
         else{
             String token = UUID.randomUUID().toString();
-            User signUpInfo = new User(-1,firstName,lastName,email.toLowerCase(),password,token);
+            User signUpInfo = new User(-1,firstName,lastName,email,password,token);
             if(UserService.insert(signUpInfo).equals("OK")) {
                 return token;
             }
             else {
                 return "Error: Unable to create new user";
+
+            }
+
+        }
+    }
+    @POST
+    @Path("delete")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String deleteUser(@FormParam("password") String password,
+                             @FormParam("password2") String password2,
+                             @CookieParam("sessionToken") Cookie sessionCookie
+    ) {
+        User currentUser = validateSessionCookie(sessionCookie);
+        Logger.log("/user/delete - Attempt by sessionToken" + sessionCookie);
+        if(currentUser == null) {
+            return "Error: Invalid user session token";
+        }
+        else if (!password.equals(password2) || !password.equals(currentUser.getPassword())){
+            return "Error: Passwords do not match or incorrect password";
+        }
+        else{
+            if(UserService.deleteById(currentUser.getId()).equals("OK")) {
+                return "OK";
+            }
+            else {
+                return "Error: Unable to delete user account";
 
             }
 

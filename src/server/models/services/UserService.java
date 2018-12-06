@@ -19,16 +19,17 @@ public class UserService {
             if (statement != null) { //Replaces the ? with the email, in lower case as emails are not case sensitive
                 statement.setString(1, email.toLowerCase());
                 ResultSet results = statement.executeQuery();
-                if (results != null && results.next()) {
+                if (results != null && results.next()) {// checks the database returned a user, then creates an object using the data
                     result = new User(results.getInt("userID"), results.getString("firstName"), results.getString("lastName"), results.getString("email"), results.getString("password"), results.getString("sessionToken"));
                 }
             }
-        } catch (SQLException resultsException) {
+        } catch (SQLException resultsException) {//logs any errors
             String error = "Database error - can't select by email from 'Users' table: " + resultsException.getMessage();
 
             Logger.log(error);
         }
-        return result;
+        return result;//returns the object of the users data
+
 
     }
     public static User selectBySessionToken(String token) {
@@ -38,19 +39,19 @@ public class UserService {
                     "SELECT userID, firstName, lastName, email, password,sessionToken FROM Users WHERE SessionToken = ?"
             );
             if (statement != null) {
-                statement.setString(1, token);
+                statement.setString(1, token); //replaces the ? with the user's session token passed in
                 ResultSet results = statement.executeQuery();
-                if (results != null && results.next()) {
+                if (results != null && results.next()) {// checks the database returned a user, then creates an object using the data
                     result = new User(results.getInt("userID"), results.getString("firstName"), results.getString("lastName"), results.getString("email"), results.getString("password"), results.getString("sessionToken"));
                 Logger.log("Selected by SessionToken from 'Users' table"+results.getInt("userID"));
                 }
             }
-        } catch (SQLException resultsException) {
+        } catch (SQLException resultsException) {//logs any errors
             String error = "Database error - can't select by email from 'Users' table: " + resultsException.getMessage();
 
             Logger.log(error);
         }
-        return result;
+        return result;//returns the object of the users data
 
     }
     public static String insert(User itemToSave) {
@@ -58,18 +59,19 @@ public class UserService {
             PreparedStatement statement = DatabaseConnection.newStatement(// SQL insert statement
                     "INSERT INTO Users (firstName, lastName, email, password, sessionToken) VALUES (?, ?, ?, ?, ?)"
             );
-            statement.setString(1, itemToSave.getFirstName());
+            //ID is automatically created by the auto-increment function of the database
+            statement.setString(1, itemToSave.getFirstName());// Fills the ?'s with the attributes of the object passed in
             statement.setString(2, itemToSave.getLastName());
-            statement.setString(3, itemToSave.getEmail());
+            statement.setString(3, itemToSave.getEmail().toLowerCase());
             statement.setString(4, itemToSave.getPassword());
             statement.setString(5, itemToSave.getSessionToken());
-            statement.executeUpdate();
-            return "OK";
-        } catch (SQLException resultsException) {
+            statement.executeUpdate(); // Executes the SQL statement
+            return "OK"; // returns ok if no errors raised
+        } catch (SQLException resultsException) { // logs and returns any errors
             String error = "Database error - can't insert into 'Users' table: " + resultsException.getMessage();
 
             Logger.log(error);
-            return error;
+            return error;// Errors are returned so the user can be informed
         }
     }
     public static String selectAllInto(List<User> targetList) {
