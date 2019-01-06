@@ -4,9 +4,10 @@ $(function(){
         $("#wrapper").toggleClass("toggled");
     });
 });
+
 function logout(){
-    Cookies.remove("sessionToken");
-    window.location.href = "/client/index.html"
+    Cookies.remove("sessionToken"); // Removes the sessionToken cookie
+    window.location.href = "/client/index.html" // Redirect to the homepage
 }
 function checkUserSession(){
     if(Cookies.get("sessionToken")!== undefined) {
@@ -19,10 +20,13 @@ function checkUserSession(){
                 if (!response.hasOwnProperty("error")) {
                     $("#navbarDropdownMenuLink").html("Logged in as "+response.firstName+" "+response.lastName);
                     $("#navbarAccountMenu").html('<a class="dropdown-item" onclick="logout()" href="/client/index.html">Sign Out</a>');
-                    console.log(response);
+                    console.log("Navbar updated");
                     pageLoad(response);
                   }
-
+                else{
+                    alert("Please login first");
+                    window.location.href = "/client/login.html";
+                }
             }
         })
     }

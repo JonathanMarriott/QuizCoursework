@@ -73,22 +73,22 @@ public class UserController {
     @Produces(MediaType.TEXT_PLAIN) // returns a string
     public String deleteUser(@FormParam("password") String password, // Form fields are set as parameters
                              @FormParam("password2") String password2,
-                             @CookieParam("sessionToken") Cookie sessionCookie // Takes the
+                             @CookieParam("sessionToken") Cookie sessionCookie // Takes the client sessionToken cookie
     ) {
-        User currentUser = validateSessionCookie(sessionCookie);
-        Logger.log("/user/delete - Attempt by sessionToken" + sessionCookie);
-        if(currentUser == null) {
-            return "Error: Invalid user session token";
+        User currentUser = validateSessionCookie(sessionCookie); // calls the method to get the users data from the DB
+        Logger.log("/user/delete - Attempt by sessionToken" + sessionCookie); // logs the delete attempt
+        if(currentUser == null) { // checks the Session token was found in the database
+            return "Error: Invalid user session token"; // If the user was not found an error is returned
         }
-        else if (!password.equals(password2) || !password.equals(currentUser.getPassword())){
-            return "Error: Passwords do not match or incorrect password";
+        else if (!password.equals(password2) || !password.equals(currentUser.getPassword())){ //Checks the 2 passwords entered matched the DB password
+            return "Error: Passwords do not match or incorrect password"; // If the passwords dont match an error is returned
         }
         else{
-            if(UserService.deleteById(currentUser.getId()).equals("OK")) {
-                return "OK";
+            if(UserService.deleteById(currentUser.getId()).equals("OK")) { // Calls the delete method in the service class
+                return "OK"; // Returns OK if the account was sucessfully deleted
             }
             else {
-                return "Error: Unable to delete user account";
+                return "Error: Unable to delete user account"; // Returns an error if the DB could not delete the account
 
             }
 
@@ -121,6 +121,6 @@ public class UserController {
             return currentUser; //returns the user object with matching session token
         }
     }
-    return null;//
+    return null;// If user is not found return null
 }
 }
