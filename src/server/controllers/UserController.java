@@ -111,6 +111,89 @@ public class UserController {
             return currentUser.toJSON().toString(); // returns the user in the JSON format
         }
     }
+    @POST // Handles Post requests
+    @Path("updateEmail")  // bound to /user/update
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED) // Takes in form data
+    @Produces(MediaType.TEXT_PLAIN) // returns a string
+    public String updateEmail(@FormParam("email") String email, // Form fields are set as parameters
+                             @CookieParam("sessionToken") Cookie sessionCookie // Takes the client sessionToken cookie
+    ){
+        User user = validateSessionCookie(sessionCookie); // calls the method to get the users data from the DB
+        Logger.log("/user/updateEmail - Attempt by sessionToken" + sessionCookie); // logs the delete attempt
+        if(user == null) { // checks the Session token is correct
+            return "Error: Invalid user session token"; // If the session token is invalid error is produced
+        }
+        else{
+            user.setEmail(email);
+            if(UserService.update(user).equals("OK")) { // Calls the update method in the service class
+                return "OK"; // Returns OK if the account was successfully updated
+            }
+            else {
+                return "Error: Unable to update email"; // Returns an error if the DB could not update the account
+
+            }
+
+        }
+    }
+    @POST // Handles Post requests
+    @Path("updateName")  // bound to /user/update
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED) // Takes in form data
+    @Produces(MediaType.TEXT_PLAIN) // returns a string
+    public String updateEmail(@FormParam("firstName") String first, // Form fields are set as parameters
+                              @FormParam("lastName") String last,
+                              @CookieParam("sessionToken") Cookie sessionCookie // Takes the client sessionToken cookie
+    ){
+        User user = validateSessionCookie(sessionCookie); // calls the method to get the users data from the DB
+        Logger.log("/user/updateName - Attempt by sessionToken" + sessionCookie); // logs the delete attempt
+        if(user == null) { // checks the Session token is correct
+            return "Error: Invalid user session token"; // If the session token is invalid error is produced
+        }
+        else{
+            user.setFirstName(first);
+            user.setLastName(last);
+            if(UserService.update(user).equals("OK")) { // Calls the update method in the service class
+                return "OK"; // Returns OK if the account was successfully updated
+            }
+            else {
+                return "Error: Unable to update names"; // Returns an error if the DB could not update the account
+
+            }
+
+        }
+    }
+    @POST // Handles Post requests
+    @Path("updatePassword")  // bound to /user/update
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED) // Takes in form data
+    @Produces(MediaType.TEXT_PLAIN) // returns a string
+    public String updateEmail(@FormParam("oldPassword") String oldPw, // Form fields are set as parameters
+                              @FormParam("password") String pw1,
+                              @FormParam("password2") String pw2,
+                              @CookieParam("sessionToken") Cookie sessionCookie // Takes the client sessionToken cookie
+    ){
+        User user = validateSessionCookie(sessionCookie); // calls the method to get the users data from the DB
+        Logger.log("/user/updateName - Attempt by sessionToken" + sessionCookie); // logs the delete attempt
+        if(user == null) { // checks the Session token is correct
+            return "Error: Invalid user session token"; // If the session token is invalid error is produced
+        }
+        else if(!(user.getPassword().equals(oldPw))){ // Checks the password is correct
+            return "Error: Old password incorrect";
+        }
+        else if(!(pw1.equals(pw2))){
+            return "Error: New passwords do not match";
+        }
+        else{
+            user.setPassword(pw1);
+            if(UserService.update(user).equals("OK")) { // Calls the update method in the service class
+                return "OK"; // Returns OK if the account was successfully updated
+            }
+            else {
+                return "Error: Unable to update password"; // Returns an error if the DB could not update the account
+
+            }
+
+        }
+    }
+
 
     public static User validateSessionCookie(Cookie sessionCookie) { // Takes a session cookie as a parameter
     if (sessionCookie != null) { // Checks the cookie contains data
