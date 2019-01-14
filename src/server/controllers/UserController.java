@@ -139,7 +139,7 @@ public class UserController {
     @Path("updateName")  // bound to /user/update
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED) // Takes in form data
     @Produces(MediaType.TEXT_PLAIN) // returns a string
-    public String updateEmail(@FormParam("firstName") String first, // Form fields are set as parameters
+    public String updateName(@FormParam("firstName") String first, // Form fields are set as parameters
                               @FormParam("lastName") String last,
                               @CookieParam("sessionToken") Cookie sessionCookie // Takes the client sessionToken cookie
     ){
