@@ -124,7 +124,7 @@ public class UserController {
             return "Error: Invalid user session token"; // If the session token is invalid error is produced
         }
         else{
-            user.setEmail(email);
+            user.setEmail(email.toLowerCase());
             if(UserService.update(user).equals("OK")) { // Calls the update method in the service class
                 return "OK"; // Returns OK if the account was successfully updated
             }
@@ -165,7 +165,7 @@ public class UserController {
     @Path("updatePassword")  // bound to /user/update
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED) // Takes in form data
     @Produces(MediaType.TEXT_PLAIN) // returns a string
-    public String updateEmail(@FormParam("oldPassword") String oldPw, // Form fields are set as parameters
+    public String updatePassword(@FormParam("oldPassword") String oldPw, // Form fields are set as parameters
                               @FormParam("password") String pw1,
                               @FormParam("password2") String pw2,
                               @CookieParam("sessionToken") Cookie sessionCookie // Takes the client sessionToken cookie
