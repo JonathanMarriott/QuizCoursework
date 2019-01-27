@@ -60,40 +60,25 @@
     <!-- Page Content -->
     <div class="container-fluid col-8 justify-content-md-center text-center">
         <h3 class="font-weight-normal text-light">Create a Quiz</h3><!-- Page heading-->
-        <div id="titleDiv" class="col-12"> <!-- div for title form/ show title once submitted-->
+        <div id="titleDiv" class=""> <!-- div for title form/ show title once submitted-->
             <form class="form justify-content-center" id="titleForm"><!--Form to add title-->
                 <div class="form-row justify-content-center "> <!--Makes button & field appear on same line-->
-                <div class="form-group mx-2 col-8"><!--mx-2 provides padding between the button & col-8 sets the field length-->
-                    <label for="inputTitle" class="sr-only">Enter quiz title</label> <!--Hidden label for form field below-->
-                    <input type="text" id="inputTitle" name="title" class="form-control" placeholder="Enter Quiz Title" required>
-                </div>
-                <div class="form-group col-2"><!--button div, col-2 sets the relative length for the button-->
-                    <button class="btn btn-primary btn-block" type="submit">Submit</button> <!--button to submit the form-->
-                </div>
-                </div>
-            </form>
-        </div>
-        <div id="finishedQuestions"></div> <!--div to show the finished & submitted questions-->
-        <div id="formDiv">
-            <form class="form justify-content-center" id="questionForm"><!--Form to add title-->
-                <div class="form justify-content-center "> <!--Makes button & field appear on same line-->
-                    <div class="form-group col-12"><!--mx-2 provides padding between the button & col-8 sets the field length-->
-                        <label for="inputQuestion" class="sr-only">Enter question</label> <!--Hidden label for form field below-->
-                        <input type="text" id="inputQuestion" name="question" class="form-control" placeholder="Enter Question" required>
-                    </div>
-                    <div class="form-group form-row col-12">
-                        <label for="inputQuestion" class="sr-only">Enter question</label> <!--Hidden label for form field below-->
-                        <input type="text" id="inputQuestion" name="question" class="form-control" placeholder="Enter Question" required>
+                    <div class="form-group mx-2 col-9"><!--mx-2 provides padding between the button & col-8 sets the field length-->
+                        <label for="inputTitle" class="sr-only">Enter quiz title</label> <!--Hidden label for form field below-->
+                        <input type="text" id="inputTitle" name="title" class="form-control" placeholder="Enter Quiz Title" required>
                     </div>
                     <div class="form-group col-2"><!--button div, col-2 sets the relative length for the button-->
                         <button class="btn btn-primary btn-block" type="submit">Submit</button> <!--button to submit the form-->
                     </div>
                 </div>
             </form>
+        </div>
+        <hr style="border-top: 1px solid #d1c5ce !important; ">
+        <div id="finishedQuestions"></div> <!--div to show the finished & submitted questions-->
 
-
-        </div><!--div to show the form for a new question once the title is submitted-->
-    </div>
+        <div id="formDiv">
+</div><!--div to show the form for a new question once the title is submitted-->
+</div>
 
 </div>
 </body>
