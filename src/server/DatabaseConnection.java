@@ -1,5 +1,7 @@
 package server;
 
+import org.sqlite.SQLiteConfig;
+
 import java.sql.*;
 
 public class DatabaseConnection {
@@ -10,8 +12,10 @@ public class DatabaseConnection {
     {
         try
         {
+            SQLiteConfig config = new SQLiteConfig();
+            config.enforceForeignKeys(true);
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:resources/" + dbFile);
+            connection = DriverManager.getConnection("jdbc:sqlite:resources/" + dbFile,config.toProperties());
             System.out.println("Database connection successfully established.");
         }
         catch (ClassNotFoundException exception)
