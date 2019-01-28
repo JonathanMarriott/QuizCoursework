@@ -68,7 +68,7 @@ public class Quiz {
     @SuppressWarnings("unchecked")
     public JSONObject toJSON() {
         JSONObject j = new JSONObject();
-        j.put("id", getId());
+        j.put("quizID", getId());
         j.put("quizTitle", getQuizTitle());
         j.put("userID", getUserID());
         j.put("noOfPlays", getNoOfPlays());

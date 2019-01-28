@@ -62,11 +62,12 @@ public class QuizService {
     public static String insert(Quiz itemToSave) {
         try {
             PreparedStatement statement = DatabaseConnection.newStatement(
-                    "INSERT INTO Quizzes (quizTitle, userID, noOfPlays) VALUES (?, ?, ?)"
+                    "INSERT INTO Quizzes (quizID, quizTitle, userID, noOfPlays) VALUES (?, ?, ?, ?)"
             );
-            statement.setString(1, itemToSave.getQuizTitle());
-            statement.setInt(2, itemToSave.getUserID());
-            statement.setInt(3, itemToSave.getNoOfPlays());
+            statement.setInt(1, itemToSave.getId());
+            statement.setString(2, itemToSave.getQuizTitle());
+            statement.setInt(3, itemToSave.getUserID());
+            statement.setInt(4, itemToSave.getNoOfPlays());
 
             statement.executeUpdate();
             return "OK";

@@ -86,23 +86,24 @@ function questionForm(quizData){
     const form = $("#questionForm"); // selects the form element
     form.submit(event =>{
         event.preventDefault(); // Prevents the default form behaviour
-    let formData = new FormData($("#questionForm")[0]); //Constructs form data from the fields
-    formData.append("quizID",quizData.quizID);//Adds the quizID to the data payload
-    $.ajax({ // forms ajax request
-        url: '/question/create', //Sends to the question controller class
-        type: 'POST',
-        data: formData,
-        success: response => { //Runs once the server responds
-            if (response.hasOwnProperty("error")) { //Checks for errors in the JSON object
-                alert(response.error); //Displays any errors
-            } else {
-                console.log("Question submitted successfully") // logs the success
-                addQuestion(response);
-            }},
-        cache: false, //needed due to sending file
-        contentType: false,//needed due to sending file
-        processData: false//needed due to sending file
+        let formData = new FormData($("#questionForm")[0]); //Constructs form data from the fields
+        console.log(quizData.quizID);
+        formData.append("quizID",quizData.quizID);//Adds the quizID to the data payload
+        $.ajax({ // forms ajax request
+            url: '/question/create', //Sends to the question controller class
+            type: 'POST',
+            data: formData,
+            success: response => { //Runs once the server responds
+                if (response.hasOwnProperty("error")) { //Checks for errors in the JSON object
+                    alert(response.error); //Displays any errors
+                } else {
+                    console.log("Question submitted successfully") // logs the success
+                    addQuestion(response);
+                }},
+            cache: false, //needed due to sending file
+            contentType: false,//needed due to sending file
+            processData: false//needed due to sending file
+        });
     });
-});
 
 }

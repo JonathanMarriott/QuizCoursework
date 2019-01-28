@@ -19,6 +19,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import static server.models.Question.questions;
+
 @Path("/question")
 public class QuestionController {
 
@@ -56,7 +58,8 @@ public class QuestionController {
             return response.toString(); // returns the JSON object with the error
         }
         else if(!fileDetail.getFileName().equals("")){
-            String fileName = fileDetail.getName();
+            Logger.log("File Detected");
+            String fileName = fileDetail.getFileName();
             int dot = fileName.lastIndexOf('.');//finds where the dot is to get the file extension
             String fileExtension = fileName.substring(dot + 1);//get file extension from fileName
             newFileName = "img/" + UUID.randomUUID() + "." + fileExtension;  //create a new unique identifier for file and append extension
@@ -78,9 +81,28 @@ public class QuestionController {
                 return response.toString(); // returns the JSON object with the error
             }
         }
-        Question currentQuestion = new Question(-1,Integer.parseInt(quizID),question,newFileName,explanation);
+        QuestionService.selectAllInto(questions);
+        Question currentQuestion = new Question(Question.nextId(),Integer.parseInt(quizID),question,newFileName,explanation);
         if(QuestionService.insert(currentQuestion).equals("OK")){
-            return currentQuestion.toJSON().toString();
+            Logger.log("Question added to DB");
+            String ansArray[][] = {{answer1,answer2,answer3,answer4},{checkAns1,checkAns2,checkAns3,checkAns4}};
+            if (AnswerController.addAnswers(ansArray,currentQuestion.getQuestionID()).equals("error")) {
+                JSONObject response = new JSONObject(); // Creates new JSON object
+                response.put("error", "Error: Could not add Answers to database");// adds an error to the JSON object
+                return response.toString(); // returns the JSON object with the error
+            }
+            else{
+                JSONObject response = currentQuestion.toJSON();
+                response.put("answer1",answer1);
+                response.put("answer2",answer2);
+                response.put("answer3",answer3);
+                response.put("answer4",answer4);
+                response.put("checkAns1",checkAns1);
+                response.put("checkAns2",checkAns2);
+                response.put("checkAns3",checkAns3);
+                response.put("checkAns4",checkAns4);
+                return response.toString();
+            }
         }
         else {
             JSONObject response = new JSONObject(); // Creates new JSON object

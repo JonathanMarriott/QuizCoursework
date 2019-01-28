@@ -10,6 +10,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 
+import static server.models.Quiz.quizs;
+
 @Path("/quiz")
 public class QuizController {
     @Path("/create")
@@ -26,7 +28,8 @@ public class QuizController {
             return response.toString(); // returns the JSON object with the error
         }
         else{
-            Quiz currentQuiz = new Quiz(-1,title,currentUser.getId(),0);
+            QuizService.selectAllInto(quizs);
+            Quiz currentQuiz = new Quiz(Quiz.nextId(),title,currentUser.getId(),0);
             if(QuizService.insert(currentQuiz).equals("OK")){
                 Logger.log("Quiz added to DB");
                 return currentQuiz.toJSON().toString();

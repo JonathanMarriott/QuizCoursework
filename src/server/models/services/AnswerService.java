@@ -60,11 +60,12 @@ public class AnswerService {
     public static String insert(Answer itemToSave) {
         try {
             PreparedStatement statement = DatabaseConnection.newStatement(
-                    "INSERT INTO Answers (questionID, content, correctAns) VALUES (?, ?, ?)"
+                    "INSERT INTO Answers (answerID,questionID, content, correctAns) VALUES (?, ?, ?, ?)"
             ); //autoincrement id
-            statement.setInt(1, itemToSave.getQuestionID());
-            statement.setString(2, itemToSave.getContent());
-            statement.setBoolean(3, itemToSave.getCorrectAns());
+            statement.setInt(1, itemToSave.getAnswerID());
+            statement.setInt(2, itemToSave.getQuestionID());
+            statement.setString(3, itemToSave.getContent());
+            statement.setBoolean(4, itemToSave.getCorrectAns());
             statement.executeUpdate();
             return "OK";
         } catch (SQLException resultsException) {
