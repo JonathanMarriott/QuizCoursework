@@ -107,3 +107,6 @@ function questionForm(quizData){
     });
 
 }
+function addQuestion(questionData){
+    console.log(questionData);
+}

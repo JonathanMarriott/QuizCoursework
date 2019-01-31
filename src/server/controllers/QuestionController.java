@@ -11,6 +11,7 @@ import server.Logger;
 import server.models.Question;
 import server.models.User;
 import server.models.services.QuestionService;
+import server.models.services.QuizService;
 
 import java.util.UUID;
 import java.io.InputStream;
@@ -26,10 +27,10 @@ public class QuestionController {
 
     @POST
     @Path("/create")
-    @Consumes(MediaType.MULTIPART_FORM_DATA) // Takes in form data
-    @Produces(MediaType.APPLICATION_JSON)
-    public String addQuiz(@CookieParam("sessionToken") Cookie sessionCookie,
-                          @FormDataParam("question") String question,
+    @Consumes(MediaType.MULTIPART_FORM_DATA) // multipart data due to file upload
+    @Produces(MediaType.APPLICATION_JSON) // returns JSON to browser
+    public String addQuiz(@CookieParam("sessionToken") Cookie sessionCookie, //Takes in the session token cookie
+                          @FormDataParam("question") String question, /// all the form fields are accepted
                           @FormDataParam("answer1") String answer1,
                           @FormDataParam("answer2") String answer2,
                           @FormDataParam("answer3") String answer3,
@@ -40,31 +41,37 @@ public class QuestionController {
                           @FormDataParam("checkAns4") String checkAns4,
                           @FormDataParam("explanation") String explanation,
                           @FormDataParam("quizID") String quizID,
-                          @FormDataParam("picture") InputStream uploadedInputStream,
-                          @FormDataParam("picture") FormDataContentDisposition fileDetail){
+                          @FormDataParam("picture") InputStream uploadedInputStream, // Actual file data
+                          @FormDataParam("picture") FormDataContentDisposition fileDetail){ //Contains the file type& name
         Logger.log("Request on /quiz/create/ ");
-        User currentUser = UserController.validateSessionCookie(sessionCookie);
-        String newFileName = "";
-        if(currentUser == null){
+        User currentUser = UserController.validateSessionCookie(sessionCookie); // Checks the session cookie
+        String newFileName = ""; // Declared here for correct scope
+        if(currentUser == null){ // Checks the session token was valid
             Logger.log("Error: Invalid user session token"); // Logs the user was not found
             JSONObject response = new JSONObject(); // Creates new JSON object
             response.put("error","Invalid user session token");// adds an error to the JSON object
             return response.toString(); // returns the JSON object with the error
         }
-        else if(quizID.equals("undefined")){
+        else if(quizID.equals("undefined") || QuizService.selectById(Integer.parseInt(quizID))==null){ // Checks the quizID is valid
             Logger.log("Error: Invalid quizID"); // Logs the user was not found
             JSONObject response = new JSONObject(); // Creates new JSON object
             response.put("error","Invalid quizID");// adds an error to the JSON object
             return response.toString(); // returns the JSON object with the error
         }
-        else if(!fileDetail.getFileName().equals("")){
+        else if(explanation.length()>800){// Checks the explanations is less than 800 characters
+            Logger.log("Error: Explanation too long"); // Logs the user was not found
+            JSONObject response = new JSONObject(); // Creates new JSON object
+            response.put("error","Explanation too long (max 800 characters)");// adds an error to the JSON object
+            return response.toString(); // returns the JSON object with the error
+        }
+        else if(!fileDetail.getFileName().equals("")){ //Checks if a file was uploaded
             Logger.log("File Detected");
-            String fileName = fileDetail.getFileName();
+            String fileName = fileDetail.getFileName(); // Gets the filename
             int dot = fileName.lastIndexOf('.');//finds where the dot is to get the file extension
             String fileExtension = fileName.substring(dot + 1);//get file extension from fileName
             newFileName = "img/" + UUID.randomUUID() + "." + fileExtension;  //create a new unique identifier for file and append extension
-            String uploadedFileLocation = "C:\\Users\\Jonathan\\Documents\\QuizCoursework\\resources\\client\\"+newFileName;
-            try {
+            String uploadedFileLocation = "C:\\Users\\Jonathan\\Documents\\QuizCoursework\\resources\\client\\"+newFileName; //location to save the file
+            try {//Attempts to output the file to the above location
                 OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
                 int read = 0;
                 byte[] bytes = new byte[1024];
@@ -74,26 +81,27 @@ public class QuestionController {
                 }
                 out.flush();
                 out.close();
-            } catch (IOException e) {
+            } catch (IOException e) { // If any errors occur they are caught and sent to the log & client
                 e.printStackTrace();
                 JSONObject response = new JSONObject(); // Creates new JSON object
                 response.put("error",e.toString());// adds an error to the JSON object
                 return response.toString(); // returns the JSON object with the error
             }
         }
-        QuestionService.selectAllInto(questions);
+        QuestionService.selectAllInto(questions); //Needed to find the next ID
+        //below creates a Question object of the users question
         Question currentQuestion = new Question(Question.nextId(),Integer.parseInt(quizID),question,newFileName,explanation);
-        if(QuestionService.insert(currentQuestion).equals("OK")){
-            Logger.log("Question added to DB");
+        if(QuestionService.insert(currentQuestion).equals("OK")){ //inserts the question into the database & checks if successful
+            Logger.log("Question added to DB"); //below creates a 2Dim String array of the answers & if they are right
             String ansArray[][] = {{answer1,answer2,answer3,answer4},{checkAns1,checkAns2,checkAns3,checkAns4}};
-            if (AnswerController.addAnswers(ansArray,currentQuestion.getQuestionID()).equals("error")) {
+            if (AnswerController.addAnswers(ansArray,currentQuestion.getQuestionID()).equals("error")) { // Sends the array & the question ID to be saved
                 JSONObject response = new JSONObject(); // Creates new JSON object
                 response.put("error", "Error: Could not add Answers to database");// adds an error to the JSON object
                 return response.toString(); // returns the JSON object with the error
             }
             else{
-                JSONObject response = currentQuestion.toJSON();
-                response.put("answer1",answer1);
+                JSONObject response = currentQuestion.toJSON(); //All details saved & question data put into JSON
+                response.put("answer1",answer1); // All the answer details are added to the JSON so they can be displayed
                 response.put("answer2",answer2);
                 response.put("answer3",answer3);
                 response.put("answer4",answer4);
@@ -101,10 +109,10 @@ public class QuestionController {
                 response.put("checkAns2",checkAns2);
                 response.put("checkAns3",checkAns3);
                 response.put("checkAns4",checkAns4);
-                return response.toString();
+                return response.toString(); // Sends the JSON of the saved question & answers back to the browser
             }
         }
-        else {
+        else { // returns an error if the question could not be added
             JSONObject response = new JSONObject(); // Creates new JSON object
             response.put("error","Error: Could not add question to database");// adds an error to the JSON object
             return response.toString(); // returns the JSON object with the error
