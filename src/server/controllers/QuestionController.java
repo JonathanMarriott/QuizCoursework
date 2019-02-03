@@ -6,6 +6,7 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import server.Logger;
 import server.models.Question;
@@ -101,14 +102,18 @@ public class QuestionController {
             }
             else{
                 JSONObject response = currentQuestion.toJSON(); //All details saved & question data put into JSON
-                response.put("answer1",answer1); // All the answer details are added to the JSON so they can be displayed
-                response.put("answer2",answer2);
-                response.put("answer3",answer3);
-                response.put("answer4",answer4);
-                response.put("checkAns1",checkAns1);
-                response.put("checkAns2",checkAns2);
-                response.put("checkAns3",checkAns3);
-                response.put("checkAns4",checkAns4);
+                JSONArray allAns = new JSONArray();
+                JSONArray checkAnsArray = new JSONArray();
+                allAns.add(answer1);
+                allAns.add(answer2);
+                allAns.add(answer3);
+                allAns.add(answer4);
+                checkAnsArray.add(checkAns1);
+                checkAnsArray.add(checkAns2);
+                checkAnsArray.add(checkAns3);
+                checkAnsArray.add(checkAns4);
+                response.put("answers",allAns);
+                response.put("checkAns",checkAnsArray);
                 return response.toString(); // Sends the JSON of the saved question & answers back to the browser
             }
         }

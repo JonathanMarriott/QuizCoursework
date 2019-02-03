@@ -23,7 +23,8 @@ function titleForm(){
     });
 }
 function titleFinish(quizData) {
-    $("#titleDiv").html('<h4 class="font-weight-normal text-light">Quiz Title: ' + quizData.quizTitle + '</h4>') // Replaces the title form with the submitted title
+    $("#titleDiv").html('<h4 class="font-weight-normal text-light">Quiz Title: ' + quizData.quizTitle  +
+        '</h4><a class="btn btn-primary btn" href ="/client/profile.html" role="button">Finished Quiz</a>') // Replaces the title form with the submitted title
     //Code below inserts the form to add a question to the quiz
     $("#formDiv").html('<h4 class="font-weight-normal text-light">Add a question</h4>' +
         '<form class="form justify-content-center" id="questionForm" enctype="multipart/form-data">\n' +
@@ -75,7 +76,7 @@ function titleFinish(quizData) {
         '                        <input type="file" class="form-control-file font-weight-normal text-light" id="picture" name="picture">\n' +
         '                    </div>\n' +
         '                    <div class="form-group col-2"><!--button div, col-2 sets the relative length for the button-->\n' +
-        '                        <button class="btn btn-primary btn-block" type="submit">Submit</button> <!--button to submit the form-->\n' +
+        '                        <button class="btn btn-primary" type="submit">Submit</button> <!--button to submit the form-->\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '    </form>');
@@ -83,9 +84,15 @@ function titleFinish(quizData) {
 }
 
 function questionForm(quizData){
+    console.log(quizData);
     const form = $("#questionForm"); // selects the form element
     form.submit(event =>{
         event.preventDefault(); // Prevents the default form behaviour
+        //checks at least one answer is correct
+        if(!($("#ansCheck1").is(':checked') || $("#ansCheck2").is(':checked') || $("#ansCheck3").is(':checked') || $("#ansCheck4").is(':checked'))){
+            alert("Select at least one correct answer")
+        }
+        else{
         let formData = new FormData($("#questionForm")[0]); //Constructs form data from the fields
         console.log(quizData.quizID);
         formData.append("quizID",quizData.quizID);//Adds the quizID to the data payload
@@ -104,9 +111,29 @@ function questionForm(quizData){
             contentType: false,//needed due to sending file
             processData: false//needed due to sending file
         });
-    });
-
+    }});
 }
 function addQuestion(questionData){
-    console.log(questionData);
+    console.log(questionData); // Logs the JSON returned for debugging
+    $("#questionForm").trigger("reset"); // resets the question form
+    let questionBox = "<div class=\"media border p-1 my-1\">\n" + // Creates a  html bootstrap media box for the question
+        "                <div class=\"media-body text-light col-9\" style=\"\">\n" +
+        "                    <h5 class=\"mt-0 mb-1\" >Question</h5>\n" +
+        questionData.questionTitle +
+        "                    <ul class=\"list-group col-10 jusify-center p-2 mx-auto\">"
+    for(let i=0;i<4; i++){ // Iterates through the returned answers
+        if(questionData.checkAns[i]==="on"){// checks if the answer is correct -> gets put in green box
+            questionBox += "<li class=\"list-group-item list-group-item-success py-1\">"+questionData.answers[i]+"</li>"
+        }//if answer is incorrect it is put into red box
+        else{questionBox += "<li class=\"list-group-item list-group-item-danger py-1\">"+questionData.answers[i]+"</li>"}
+    }
+    questionBox += " </ul>\n"; // ends the html list
+    // below checks if there is an explanation & adds it if it exists
+    if(questionData.explanation!=""){questionBox += "Explanation: "+questionData.explanation}
+    questionBox += " </div>\n"; //Ends the media body div
+    if(questionData.image != ""){ //Checks if an image was returned -> adds it to the html if present
+        questionBox +="<img src="+questionData.image+" class=\"img-fluid pt-1 w-25 \" alt=\"Question Image\">"
+    }
+    questionBox +="</div>" // closes the media div
+    $("#finishedQuestions").append(questionBox); // Adds the assembled HTML to the end of the finished Questions div
 }
