@@ -3,8 +3,12 @@ package server.controllers;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import server.Logger;
+import server.models.Answer;
+import server.models.Question;
 import server.models.Quiz;
 import server.models.User;
+import server.models.services.AnswerService;
+import server.models.services.QuestionService;
 import server.models.services.QuizService;
 import server.models.services.UserService;
 
@@ -12,6 +16,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 
+import static server.models.Answer.answers;
+import static server.models.Question.questions;
 import static server.models.Quiz.quizs;
 
 @Path("/quiz")
@@ -52,10 +58,10 @@ public class QuizController {
 
     @Path("/search")
     @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED) // Takes in URLencoded string
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED) // Takes in URL encoded string
     @Produces(MediaType.APPLICATION_JSON) //return JSON to browser
     public String searchQuiz(@CookieParam("sessionToken")Cookie sessionCookie, // takes in session cookie
-                          @FormParam("search") String search) { //takes in the entered title
+                          @FormParam("search") String search) { //takes in the entered search
         Logger.log("Request on /quiz/search for:"+search);
         User currentUser = UserController.validateSessionCookie(sessionCookie); //check the session token is valid
         if(currentUser==null) { // If token is invalid error is returned
@@ -81,6 +87,51 @@ public class QuizController {
             response.put("quizzes", matches);// adds all matches to the response
             Logger.log(response.toString());
             return response.toString(); // returns the JSON object with the quizzes
+
+        }
+    }
+
+
+    @Path("/play/{id}")
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED) // Takes in URL encoded string
+    @Produces(MediaType.APPLICATION_JSON) //return JSON to browser
+    public String playQuiz(@CookieParam("sessionToken")Cookie sessionCookie, // takes in session cookie
+                             @PathParam("id") String quizID) { //takes in the ID in the URL of API
+        Logger.log("Request on /quiz/play for: " + quizID);
+        User currentUser = UserController.validateSessionCookie(sessionCookie); //check the session token is valid
+        if (currentUser == null) { // If token is invalid error is returned
+            JSONObject response = new JSONObject(); // Creates new JSON object
+            response.put("error", "Invalid user session token");// adds an error to the JSON object
+            return response.toString(); // returns the JSON object with the error
+        }
+        else {
+            Quiz theQuiz = QuizService.selectById(Integer.parseInt(quizID)); // finds the quiz in the DB
+            QuestionService.selectAllInto(questions); // gets all the questions from DB
+            AnswerService.selectAllInto(answers); // gets all the answers from the DB
+            JSONObject quizResponse = theQuiz.toJSON(); // Puts the question into the JSON response
+            JSONArray questionArray = new JSONArray(); // creates an array for the questions
+            for(Question currentQuestion: questions){ // goes through all the questions
+                if (currentQuestion.getQuizID()==theQuiz.getId()){ // Checks if the question is for requested Quiz
+                    Logger.log("Found Question: "+currentQuestion.getQuestionID());
+                    JSONArray answerArray = new JSONArray(); // If true sets up array to find the answers
+                    for(Answer currentAnswer: answers){ // goes through all the answers
+                        // checks if the answer is for the current question
+                        if(currentAnswer.getQuestionID()==currentQuestion.getQuestionID()){
+                            Logger.log("Found Answer: "+currentAnswer.getAnswerID());
+                            answerArray.add(currentAnswer.toJSON()); // Adds the answer to the array
+                        }
+                    }
+                    // adds the question and its array of answers to the question array
+                    JSONObject questionData = currentQuestion.toJSON();
+                    questionData.put("answers",answerArray);
+                    questionArray.add(questionData);
+                }
+            }
+            // Adds the question array to the response
+            quizResponse.put("questions",questionArray);
+            Logger.log(quizResponse.toString());
+            return quizResponse.toString(); // return the JSON response to the browser
 
         }
     }
