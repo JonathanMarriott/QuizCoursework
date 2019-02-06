@@ -90,21 +90,25 @@ public class QuizController {
     }
 
 
-    @Path("/play/{id}")
+    @Path("/play/{id}") // takes url parameter
     @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED) // Takes in URL encoded string
     @Produces(MediaType.APPLICATION_JSON) //return JSON to browser
     public String playQuiz(@CookieParam("sessionToken")Cookie sessionCookie, // takes in session cookie
                              @PathParam("id") String quizID) { //takes in the ID in the URL of API
         Logger.log("Request on /quiz/play for: " + quizID);
         User currentUser = UserController.validateSessionCookie(sessionCookie); //check the session token is valid
+        Quiz theQuiz = QuizService.selectById(Integer.parseInt(quizID)); // finds the quiz in the DB
         if (currentUser == null) { // If token is invalid error is returned
             JSONObject response = new JSONObject(); // Creates new JSON object
             response.put("error", "Invalid user session token");// adds an error to the JSON object
             return response.toString(); // returns the JSON object with the error
         }
+        else if(theQuiz==null){ //checks the quiz exists in the database
+            JSONObject response = new JSONObject(); // Creates new JSON object
+            response.put("error", "Quiz not found");// adds an error to the JSON object
+            return response.toString(); // returns the JSON object with the error
+        }
         else {
-            Quiz theQuiz = QuizService.selectById(Integer.parseInt(quizID)); // finds the quiz in the DB
             QuestionService.selectAllInto(questions); // gets all the questions from DB
             AnswerService.selectAllInto(answers); // gets all the answers from the DB
             JSONObject quizResponse = theQuiz.toJSON(); // Puts the question into the JSON response
