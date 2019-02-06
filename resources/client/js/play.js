@@ -2,19 +2,22 @@ function pageLoad(userInfo) {
     getQuiz();
 }
 function getQuiz() {
-    const searchParams = new URLSearchParams(window.location.search)
+    //Gets the quizID from the url parameter
+    const searchParams = new URLSearchParams(window.location.search);
     const quizID = searchParams.get("quizID");
+    if(quizID==null){ // if no quizID redirect to search page
+        alert("No quiz selected");
+        window.location.href = "/client/search.html";
+    }
     $.ajax({ // Forms the AJAX request
-        url: '/quiz/play/'+quizID,  // sends to the search quiz method in quiz controller
-        type: 'POST',  // Is a post request as it will be sending data
+        url: '/quiz/play/'+quizID,  // sends ID to the play quiz method in quiz controller
+        type: 'POST',  // Is a post request as it will be sending data to the server
         success: response => { //Runs once the server responds
             if (response.hasOwnProperty("error")) { //Checks for errors
                 alert(response.error); //Displays any errors
             } else {
-                console.log("Search submitted successfully") // logs the success
+                console.log("QuizID submitted successfully") // logs the success
                 runQuiz(response);
-
-
             }
         }
     });

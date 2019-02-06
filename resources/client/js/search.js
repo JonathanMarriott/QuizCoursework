@@ -24,24 +24,23 @@ function searchForm() {
 }
 
 function showResponse(response) {
-    $("#searchResults").html("");
-    console.log(response);
-    response.quizzes.forEach(quiz =>{
-        console.log(quiz);
+    $("#searchResults").html(""); // clears any previous search results
+    console.log(response); // Logs the returned quizzes
+    response.quizzes.forEach(quiz =>{ // iterates through the quizzes in the array
+        // Adds the following html to the end of the div
         $("#searchResults").append(`<div class="border rounded border-primary bg-secondary p-2 m-2">` +
-            `<span class="badge badge-primary mr-2">`+quiz.first+" "+quiz.last+`</span>` +
-            `<div class="float-right">` +
+            `<span class="badge badge-primary mr-2">`+quiz.first+" "+quiz.last+`</span>` + //adds the name
+            `<div class="float-right">` + //adds a button which calls the playButton fuction with the quizID
             `<button class="playButton btn btn-sm btn-primary ml-2" onclick="playButton(`+quiz.quizID+`)">` +
             `Play Quiz` +
             `</button>` +
-            `</div>` +
+            `</div>` + // below contains the quiz name & the number of times it was played
             `<span class="messageText lead  text-light py-2 mx-2">`+quiz.quizTitle+` |`+
             `<span class="text-light small py-2 mx-2">Number of plays: `+quiz.noOfPlays+`</span></span>` +
             `</div>`)
 
     });
 }
-function playButton(id) {
-    console.log(id);
+function playButton(id) { //Loads the play page with the quizID as a url parameter
     window.location.href = "/client/play.html?quizID="+id;
 }

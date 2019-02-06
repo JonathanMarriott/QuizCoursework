@@ -56,12 +56,12 @@ public class QuizController {
         }
     }
 
-    @Path("/search")
-    @POST
+    @Path("/search") // Handles requests on /quiz/search
+    @POST // for POST requests
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED) // Takes in URL encoded string
     @Produces(MediaType.APPLICATION_JSON) //return JSON to browser
     public String searchQuiz(@CookieParam("sessionToken")Cookie sessionCookie, // takes in session cookie
-                          @FormParam("search") String search) { //takes in the entered search
+                          @FormParam("search") String search) { //takes in the entered search item
         Logger.log("Request on /quiz/search for:"+search);
         User currentUser = UserController.validateSessionCookie(sessionCookie); //check the session token is valid
         if(currentUser==null) { // If token is invalid error is returned
@@ -72,22 +72,20 @@ public class QuizController {
         else{
             QuizService.selectAllInto(quizs);// Gets all quizzes from the database
             JSONArray matches = new JSONArray(); // Creates JSON array for matching quizzes
-            for(Quiz currentQuiz: quizs){
-
+            for(Quiz currentQuiz: quizs){ // Goes through each quiz
+                //Below checks if the quiz title contains the search item (case insensitive)
                 if (currentQuiz.getQuizTitle().toLowerCase().contains(search.toLowerCase())){
-                    Logger.log(currentQuiz.getQuizTitle());
+                    // Finds the user who made the quiz from the database
                     User quizUser = UserService.selectById(currentQuiz.getUserID());
-                    JSONObject quizData = currentQuiz.toJSON();
-                    quizData.put("first",quizUser.getFirstName());
+                    JSONObject quizData = currentQuiz.toJSON(); //Turns the quiz into JSON
+                    quizData.put("first",quizUser.getFirstName()); // Adds the users names to the JSON
                     quizData.put("last",quizUser.getLastName());
-                    matches.add(quizData);
+                    matches.add(quizData); //Adds the quiz's JSON to the array
                 }
             }
-            JSONObject response = new JSONObject(); // Creates new JSON object
-            response.put("quizzes", matches);// adds all matches to the response
-            Logger.log(response.toString());
+            JSONObject response = new JSONObject(); // Creates new JSON object for response
+            response.put("quizzes", matches);// adds all matched quizzes to the response
             return response.toString(); // returns the JSON object with the quizzes
-
         }
     }
 
