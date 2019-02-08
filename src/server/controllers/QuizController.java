@@ -3,10 +3,7 @@ package server.controllers;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import server.Logger;
-import server.models.Answer;
-import server.models.Question;
-import server.models.Quiz;
-import server.models.User;
+import server.models.*;
 import server.models.services.AnswerService;
 import server.models.services.QuestionService;
 import server.models.services.QuizService;
@@ -132,7 +129,14 @@ public class QuizController {
             }
             // Adds the question array to the response
             quizResponse.put("questions",questionArray);
-            Logger.log(quizResponse.toString());
+            //Creates the quiz attempt
+            QuizAttempt currentQuizAttempt = QuizAttemptController.addAttempt(currentUser.getId(),theQuiz.getId());
+            if (currentQuizAttempt == null){
+                JSONObject response = new JSONObject(); // Creates new JSON object
+                response.put("error", "Could not record quiz attempt");// adds an error to the JSON object
+                return response.toString(); // returns the JSON object with the error
+            }
+            quizResponse.put("attemptID",currentQuizAttempt.getAttemptID()); // adds the attempt id to response
             return quizResponse.toString(); // return the JSON response to the browser
 
         }
