@@ -131,7 +131,8 @@ public class QuizController {
             quizResponse.put("questions",questionArray);
             //Creates the quiz attempt
             QuizAttempt currentQuizAttempt = QuizAttemptController.addAttempt(currentUser.getId(),theQuiz.getId());
-            if (currentQuizAttempt == null){
+            theQuiz.setNoOfPlays(theQuiz.getNoOfPlays()+1);//increments the number of plays
+            if (currentQuizAttempt == null || !QuizService.update(theQuiz).equals("OK")){//checks both interactions for error
                 JSONObject response = new JSONObject(); // Creates new JSON object
                 response.put("error", "Could not record quiz attempt");// adds an error to the JSON object
                 return response.toString(); // returns the JSON object with the error
