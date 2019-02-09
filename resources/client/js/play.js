@@ -24,7 +24,7 @@ function getQuiz() {
 }
 function buttonPress(){
     $(".list-group-item").click(function(){ // runs when one of the answer buttons is clicked
-        $("#submitBtn").removeClass("disabled"); // enables the submit button as an answer is selected
+        $("#submitBtn").removeAttr("disabled"); // enables the submit button as an answer is selected
         $(".list-group-item").removeClass("active");// resets all the buttons to unselected
         $(this).toggleClass("active");// makes the clicked button highlighted via active class
     })
@@ -47,7 +47,7 @@ function showQuestion(quizData,counter) {
     questionArea += `</div>
             </div>
         <div class="form-group col-12 pt-4 text-center justify-content-center">
-            <button class="btn btn-lg btn-primary justify-content-center disabled" id="submitBtn"type="submit">Submit</button>
+            <button class="btn btn-lg btn-primary justify-content-center" disabled="true" id="submitBtn"type="submit">Submit</button>
         </div>`;
     $("#questionDiv").html(questionArea);
     buttonPress()
