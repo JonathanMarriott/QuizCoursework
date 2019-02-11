@@ -9,6 +9,9 @@ body {
     padding-top: 58px;
     overflow-wrap:break-word;
 }
+@media screen and (max-device-width: 568px){
+    body{padding-top: 106px;}
+}
 
 #wrapper {
     padding-left: 0;

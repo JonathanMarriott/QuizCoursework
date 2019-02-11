@@ -70,6 +70,12 @@ public class QuestionController {
             String fileName = fileDetail.getFileName(); // Gets the filename
             int dot = fileName.lastIndexOf('.');//finds where the dot is to get the file extension
             String fileExtension = fileName.substring(dot + 1);//get file extension from fileName
+            if(!(fileExtension.equals("jpg") ||fileExtension.equals("png"))){
+                Logger.log("Error: Non image file uploaded"); // Logs the user was not found
+                JSONObject response = new JSONObject(); // Creates new JSON object
+                response.put("error","Non image file uploaded");// adds an error to the JSON object
+                return response.toString(); // returns the JSON object with the error
+            }
             newFileName = "img/" + UUID.randomUUID() + "." + fileExtension;  //create a new unique identifier for file and append extension
             String uploadedFileLocation = "C:\\Users\\Jonathan\\Documents\\QuizCoursework\\resources\\client\\"+newFileName; //location to save the file
             try {//Attempts to output the file to the above location
